@@ -2,10 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: diabetes-api
-  labels:
-    app: diabetes-api
 spec:
-  replicas: 2 # Kubernetes will run 2 copies (Pods) of your API
+  replicas: 2
   selector:
     matchLabels:
       app: diabetes-api
@@ -15,9 +13,9 @@ spec:
         app: diabetes-api
     spec:
       containers:
-        - name: diabetes-api-container
-          image: diabetes-prediction-model:latest # The Docker image name you built
-          imagePullPolicy: Never # <-- FIX: Forces Kubernetes to use the local image cache
+        - name: diabetes-api
+          image: diabetes-prediction-model:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 8000
 ---
@@ -26,10 +24,48 @@ kind: Service
 metadata:
   name: diabetes-api-service
 spec:
-  type: LoadBalancer # Used for local deployment (Docker Desktop maps this to localhost)
-  ports:
-    - port: 80
-      targetPort: 8000
-      protocol: TCP
+  type: NodePort
   selector:
     app: diabetes-api
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+      nodePort: 30100
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: diabetes-api
+#   labels:
+#     app: diabetes-api
+# spec:
+#   replicas: 2 # Kubernetes will run 2 copies (Pods) of your API
+#   selector:
+#     matchLabels:
+#       app: diabetes-api
+#   template:
+#     metadata:
+#       labels:
+#         app: diabetes-api
+#     spec:
+#       containers:
+#         - name: diabetes-api-container
+#           image: diabetes-prediction-model:latest # The Docker image name you built
+#           imagePullPolicy: Never # <-- FIX: Forces Kubernetes to use the local image cache
+#           ports:
+#             - containerPort: 8000
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: diabetes-api-service
+# spec:
+#   type: LoadBalancer # Used for local deployment (Docker Desktop maps this to localhost)
+#   ports:
+#     - port: 80
+#       targetPort: 8000
+#       protocol: TCP
+#   selector:
+#     app: diabetes-api

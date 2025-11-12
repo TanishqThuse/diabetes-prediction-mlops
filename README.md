@@ -1,4 +1,4 @@
-# 🩺 Diabetes Prediction Model – MLOps Project (FastAPI + Docker + K8s)
+# 🩺 Diabetes Prediction Model – MLOps Project (FastAPI + Docker + K8s + React)
 
 > 🎥 YouTube video for the project: **"Build Your First MLOps Project"**
 
@@ -30,7 +30,7 @@ We use a Random Forest Classifier trained on the **Pima Indians Diabetes Dataset
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/iam-veeramalla/first-mlops-project.git
+git clone https://github.com/TanishqThuse/diabetes-prediction-mlops.git
 cd first-mlops-project
 ```
 
@@ -86,6 +86,21 @@ docker run -p 8000:8000 diabetes-prediction-model
 ```
 
 ## Deploy to Kubernetes
+
+```
+kubectl apply -f diabetes-prediction-model-deployment.yaml
+```
+
+OR
+
+```
+kubectl apply -f k8s-deploy.yml
+```
+then
+
+```
+minikube service diabetes-api-service
+```
 
 ```
 kubectl apply -f diabetes-prediction-model-deployment.yaml
